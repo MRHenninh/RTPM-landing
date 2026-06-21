@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // MVP: any authenticated user has full access.
+    // Tighten per collection (project membership checks) in production.
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

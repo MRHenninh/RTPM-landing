@@ -1,0 +1,79 @@
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import type { Risk, RiskStatus } from "../types";
+import { watchRisk, changeRiskStatus } from "../firebase/firestore";
+import { useRiskStore } from "../store/riskStore";
+import { useAuthStore, currentIdentity } from "../store/authStore";
+import { STATUS_LABEL } from "../lib/format";
+import { toast } from "../lib/toast";
+import RiskPanel from "../components/risk/RiskPanel";
+
+export default function RiskDetail() {
+  const { riskId } = useParams<{ riskId: string }>();
+  const navigate = useNavigate();
+  const roles = useRiskStore((s) => s.roles);
+  const patchRisk = useRiskStore((s) => s.patchRisk);
+  const user = useAuthStore((s) => s.user);
+  const me = currentIdentity(user);
+
+  const [risk, setRisk] = useState<Risk | null>(null);
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    if (!riskId) return;
+    const unsub = watchRisk(riskId, (r) => {
+      setRisk(r);
+      setNotFound(r === null);
+    });
+    return unsub;
+  }, [riskId]);
+
+  if (notFound) {
+    return (
+      <div className="p-8 text-sm text-gray-500">
+        Risk not found.{" "}
+        <button onClick={() => navigate("/")} className="text-indigo underline">
+          Back to dashboard
+        </button>
+      </div>
+    );
+  }
+
+  if (!risk) {
+    return <div className="p-8 text-sm text-gray-400">Loading risk…</div>;
+  }
+
+  async function handleChangeStatus(to: RiskStatus) {
+    if (!risk) return;
+    const from = risk.status;
+    try {
+      await changeRiskStatus(risk.id, from, to, me.name, "");
+      toast.success(`Status set to ${STATUS_LABEL[to]}`);
+    } catch {
+      toast.error("Failed to update status");
+    }
+  }
+
+  return (
+    <div className="flex h-full flex-col">
+      <div className="flex items-center gap-2 border-b border-bordergray bg-white px-6 py-3">
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800"
+        >
+          <ArrowLeft size={16} /> Back
+        </button>
+      </div>
+      <div className="flex-1 overflow-hidden">
+        <RiskPanel
+          risk={risk}
+          roles={roles}
+          authorName={me.name}
+          onPatch={(patch) => patchRisk(risk.id, patch)}
+          onChangeStatus={handleChangeStatus}
+        />
+      </div>
+    </div>
+  );
+}

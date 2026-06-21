@@ -1,0 +1,82 @@
+// Client-side first-run seeding. Runs once when Firestore has no projects,
+// so the demo UI is populated without needing the admin script.
+import {
+  collection,
+  doc,
+  writeBatch,
+  serverTimestamp,
+  Timestamp,
+} from "firebase/firestore";
+import { db } from "../firebase/config";
+import { isFirestoreEmpty } from "../firebase/firestore";
+import {
+  SEED_PROJECT,
+  SEED_ROLES,
+  SEED_RISKS,
+} from "./seedData";
+
+let seedingPromise: Promise<void> | null = null;
+
+export function seedIfEmpty(createdBy: string): Promise<void> {
+  if (!seedingPromise) {
+    seedingPromise = run(createdBy).catch((err) => {
+      console.error("Seeding failed", err);
+      seedingPromise = null;
+    });
+  }
+  return seedingPromise;
+}
+
+async function run(createdBy: string): Promise<void> {
+  const empty = await isFirestoreEmpty();
+  if (!empty) return;
+
+  const batch = writeBatch(db);
+
+  // Project
+  batch.set(doc(db, "projects", SEED_PROJECT.id), {
+    name: SEED_PROJECT.name,
+    description: SEED_PROJECT.description,
+    createdAt: serverTimestamp(),
+  });
+
+  // Roles & responsibilities
+  for (const role of SEED_ROLES) {
+    batch.set(doc(db, "roles_and_responsibilities", role.id), {
+      projectId: SEED_PROJECT.id,
+      workstream: role.workstream,
+      organization: role.organization,
+      organizationName: role.organizationName,
+      role: role.role,
+      person: role.person,
+      type: role.type,
+    });
+  }
+
+  // Risks
+  const now = Date.now();
+  for (const risk of SEED_RISKS) {
+    const ref = doc(collection(db, "risks"));
+    batch.set(ref, {
+      projectId: SEED_PROJECT.id,
+      riskId: risk.riskId,
+      title: risk.title,
+      status: risk.status,
+      priority: risk.priority,
+      startDate: Timestamp.fromMillis(now),
+      dueDate: Timestamp.fromMillis(now + risk.dueOffsetDays * 86400000),
+      recurrence: risk.recurrence,
+      collection: SEED_PROJECT.name,
+      workstreamIds: risk.workstreamIds,
+      checklist: risk.checklist,
+      notes: risk.notes,
+      attachments: [],
+      statusHistory: [],
+      createdBy,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+  }
+
+  await batch.commit();
+}

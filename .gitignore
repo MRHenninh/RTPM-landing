@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+functions/node_modules/
+
+# Build output
+dist/
+functions/lib/
+*.tsbuildinfo
+vite.config.d.ts
+vite.config.js
+
+# Environment
+.env
+.env.local
+.env.*.local
+serviceAccountKey.json
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# Editor / OS
+.DS_Store
+*.log
+.vscode/
+.idea/
