@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, connectAuthEmulator } from "firebase/auth";
-import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
+import { initializeFirestore, connectFirestoreEmulator } from "firebase/firestore";
 import { getStorage, connectStorageEmulator } from "firebase/storage";
 
 const firebaseConfig = {
@@ -14,7 +14,13 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app);
+// ignoreUndefinedProperties: Firestore otherwise throws on any `undefined`
+// field value (e.g. authorAvatar when the user has no photoURL). This makes it
+// silently drop undefined fields instead of crashing the write — a global
+// safety net regardless of which addDoc/setDoc call is responsible.
+export const db = initializeFirestore(app, {
+  ignoreUndefinedProperties: true,
+});
 export const storage = getStorage(app);
 
 // Connect to local emulators when developing.
