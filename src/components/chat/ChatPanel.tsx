@@ -64,7 +64,7 @@ export default function ChatPanel({ risk, roles, onClose }: Props) {
       content: text,
       authorUid: me.uid,
       authorName: me.name,
-      authorAvatar: me.avatar,
+      authorAvatar: me.avatar ?? "",
     });
 
     if (!isAgent) return; // team chat is just multi-user persistence
