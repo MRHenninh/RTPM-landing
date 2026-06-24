@@ -197,8 +197,19 @@ export function watchMessages(
 export async function sendMessage(
   message: Omit<RiskMessage, "id" | "timestamp">
 ): Promise<string> {
+  // Firestore rejects documents containing `undefined` field values, which
+  // crashes the save. Coerce every field to a safe default — in particular
+  // authorAvatar, which is undefined whenever the signed-in user has no
+  // photoURL ((currentUser?.photoURL ?? "")).
   const ref = await addDoc(messagesCol, {
-    ...message,
+    riskId: message.riskId,
+    mode: message.mode,
+    role: message.role,
+    content: message.content ?? "",
+    authorUid: message.authorUid ?? "anonymous",
+    authorName: message.authorName ?? "Unknown",
+    authorAvatar: message.authorAvatar ?? "",
+    reactions: message.reactions ?? {},
     timestamp: serverTimestamp(),
   });
   return ref.id;

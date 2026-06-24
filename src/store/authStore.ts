@@ -21,6 +21,6 @@ export function currentIdentity(user: User | null) {
   return {
     uid: user?.uid || "anonymous",
     name: user?.displayName || user?.email?.split("@")[0] || "You",
-    avatar: user?.photoURL || undefined,
+    avatar: user?.photoURL ?? "",
   };
 }
