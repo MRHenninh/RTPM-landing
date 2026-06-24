@@ -12,13 +12,20 @@ export default function RiskCard({ risk, roles }: Props) {
   const responsible = roles.find(
     (r) => risk.workstreamIds.includes(r.id) && r.type === "responsible"
   );
-  const workstreams = [
+  const workstreamsFromRoles = [
     ...new Set(
       roles
         .filter((r) => risk.workstreamIds.includes(r.id))
         .map((r) => r.workstream)
     ),
   ];
+  // Fall back to the risk's own workstream string (seeded Viking DC risks).
+  const workstreams =
+    workstreamsFromRoles.length > 0
+      ? workstreamsFromRoles
+      : risk.workstream
+      ? [risk.workstream]
+      : [];
   const prio = PRIORITY_META[risk.priority];
 
   return (
@@ -46,7 +53,7 @@ export default function RiskCard({ risk, roles }: Props) {
         {risk.title}
       </div>
 
-      <div className="flex flex-wrap gap-1">
+      <div className="flex flex-wrap items-center gap-1">
         {workstreams.map((ws) => (
           <span
             key={ws}
@@ -55,11 +62,19 @@ export default function RiskCard({ risk, roles }: Props) {
             {ws}
           </span>
         ))}
+        {typeof risk.score === "number" && (
+          <span
+            title="Risk score (likelihood × impact)"
+            className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold text-gray-600"
+          >
+            Score {risk.score}
+          </span>
+        )}
       </div>
 
       <div className="mt-1 flex items-center justify-between">
         <span className="text-[11px] text-gray-400">
-          Due {formatDate(risk.dueDate)}
+          {risk.nextStepOwner ? `Next: ${risk.nextStepOwner}` : `Due ${formatDate(risk.dueDate)}`}
         </span>
         {responsible && (
           <span

@@ -20,11 +20,16 @@ AI agent named **Risk Manager**.
 | State       | Zustand                                                        |
 | Routing     | React Router v6                                                |
 | Icons       | Lucide React                                                   |
-| Backend     | Firebase Firestore, Auth, Storage, Cloud Functions (Node 20)  |
-| AI agent    | Anthropic Claude (`claude-sonnet-4-6`) via a Cloud Function    |
+| Backend     | Firebase Firestore, Auth, Storage                             |
+| AI agent    | Google Gemini (`gemini-2.0-flash`) called from the frontend   |
 
-The Anthropic API key is **never** exposed to the client — all AI calls are
-proxied server-side through the `riskManagerAgent` callable Cloud Function.
+The AI chat is powered by Google Gemini, called directly from the frontend in
+`src/services/geminiService.ts` using `VITE_GEMINI_API_KEY`. The user must be
+signed in for the AI chat to run.
+
+> A legacy Anthropic/Cloud Function implementation remains at
+> `functions/src/index.ts` for reference but is **no longer used** by the app
+> (Firebase Functions requires the paid Blaze plan).
 
 ---
 
@@ -76,15 +81,17 @@ cp .env.example .env
 Fill in the `VITE_FIREBASE_*` values from your Web app config. Update
 `.firebaserc` with your real project id (replace `risk-manager-app`).
 
-### 4. Configure the Anthropic API key (server-side only)
+### 4. Configure the Gemini API key
+
+Add your key to `.env` (get one at https://aistudio.google.com/app/apikey):
 
 ```bash
-firebase functions:secrets:set ANTHROPIC_API_KEY
-# paste your sk-ant-... key when prompted
+VITE_GEMINI_API_KEY=your-gemini-api-key
 ```
 
-The key lives only in the Cloud Function runtime — it is never bundled into the
-client.
+Because the call is made from the browser, this key is shipped to the client —
+restrict it to the Generative Language API and your Hosting domain in the Google
+Cloud console, and never commit `.env`.
 
 ### 5. Run locally
 
@@ -107,19 +114,15 @@ firebase emulators:start
 ## Deploy
 
 ```bash
-# Frontend (Hosting)
+# Frontend (Hosting) — this is all that's needed for the app + AI chat
 npm run build
 firebase deploy --only hosting
 
-# Cloud Functions (AI agent)
-cd functions && npm run build && cd ..
-firebase deploy --only functions
-
-# Rules & indexes
+# Rules & indexes (when changed)
 firebase deploy --only firestore:rules,firestore:indexes,storage
 ```
 
-Or deploy everything at once: `firebase deploy`.
+No Cloud Functions deploy is required — the AI runs in the frontend via Gemini.
 
 ---
 
@@ -130,11 +133,14 @@ you can run the admin script:
 
 ```bash
 export GOOGLE_APPLICATION_CREDENTIALS=./serviceAccountKey.json
-npm run seed
+npm run seed          # project + roles + 3 generic demo risks
+npm run seed:risks    # the 6 Viking DC demo risks (RISK-001 … RISK-006)
 ```
 
 Download a service account key from **Project settings → Service accounts** and
-save it as `serviceAccountKey.json` (git-ignored).
+save it as `serviceAccountKey.json` (git-ignored). `seed:risks` writes to the
+project id `datacenter-vejle-phase-1` by default — override with
+`RTPM_PROJECT_ID` if your deployment uses a different project doc.
 
 ---
 

@@ -71,6 +71,12 @@ export interface Risk {
   recurrence: Recurrence;
   collection?: string;
   workstreamIds: string[];
+  // Optional Viking DC / RTPM risk-scoring fields (used by seeded demo risks).
+  workstream?: string;
+  likelihood?: number;
+  impact?: number;
+  score?: number;
+  nextStepOwner?: string;
   checklist: ChecklistItem[];
   notes: string;
   attachments: Attachment[];

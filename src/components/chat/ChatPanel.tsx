@@ -8,7 +8,11 @@ import {
   sendMessage,
   toggleReaction,
 } from "../../firebase/firestore";
-import { askRiskManager, buildRiskContext, type AgentMessage } from "../../firebase/agent";
+import {
+  askRiskManager,
+  buildRiskContext,
+  type ChatMessage,
+} from "../../services/geminiService";
 import { toast } from "../../lib/toast";
 import ChatModeToggle from "./ChatModeToggle";
 import ChatMessages from "./ChatMessages";
@@ -65,7 +69,7 @@ export default function ChatPanel({ risk, roles, onClose }: Props) {
 
     if (!isAgent) return; // team chat is just multi-user persistence
 
-    // Agent mode: rate limit, then call the Cloud Function.
+    // Agent mode: rate limit, then call Gemini directly from the frontend.
     if (!canCallAgent()) {
       toast.info("Please wait a moment before asking again.");
       return;
@@ -73,7 +77,7 @@ export default function ChatPanel({ risk, roles, onClose }: Props) {
     markAgentCall();
     setTyping(true);
     try {
-      const history: AgentMessage[] = [...messages, {
+      const history: ChatMessage[] = [...messages, {
         id: "local",
         riskId: risk.id,
         mode,
