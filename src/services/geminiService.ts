@@ -67,6 +67,44 @@ export function buildRiskContext(
  *
  * Requires the user to be authenticated and VITE_GEMINI_API_KEY to be set.
  */
+/**
+ * Build a programme-wide context block from ALL project risks, for the global
+ * Project Manager assistant (right panel / landing card).
+ */
+export function buildProjectContext(
+  risks: Risk[]
+): Record<string, unknown> {
+  const now = Date.now();
+  const overdue = risks.filter(
+    (r) =>
+      r.status !== "resolved" &&
+      r.dueDate &&
+      r.dueDate.toDate().getTime() < now
+  );
+  return {
+    project: "Viking DC — Phase 1",
+    totalRisks: risks.length,
+    byStatus: {
+      identified: risks.filter((r) => r.status === "identified").length,
+      assessed: risks.filter((r) => r.status === "assessed").length,
+      mitigated: risks.filter((r) => r.status === "mitigated").length,
+      resolved: risks.filter((r) => r.status === "resolved").length,
+    },
+    overdueCount: overdue.length,
+    risks: risks.map((r) => ({
+      id: r.riskId,
+      title: r.title,
+      status: r.status,
+      priority: r.priority,
+      workstream: r.workstream ?? null,
+      score: r.score ?? null,
+      nextStepOwner: r.nextStepOwner ?? null,
+      dueDate: r.dueDate ? r.dueDate.toDate().toISOString() : null,
+      notes: r.notes,
+    })),
+  };
+}
+
 export async function askRiskManager(
   messages: ChatMessage[],
   riskContext: Record<string, unknown>

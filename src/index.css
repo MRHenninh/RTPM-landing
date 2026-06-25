@@ -3,8 +3,12 @@
 @tailwind utilities;
 
 :root {
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: "Montserrat", system-ui, sans-serif;
   color: #111827;
+}
+
+.font-head {
+  font-family: "Barlow Condensed", system-ui, sans-serif;
 }
 
 html,
@@ -29,6 +33,40 @@ body {
 }
 .scroll-thin::-webkit-scrollbar-track {
   background: transparent;
+}
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.anim-slide-left {
+  animation: slide-in-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.anim-slide-right {
+  animation: slide-in-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.anim-fade {
+  animation: fade-in 0.3s ease-in-out;
 }
 
 @keyframes pulse-dot {

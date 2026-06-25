@@ -48,6 +48,29 @@ export const PRIORITY_META: Record<
   critical: { label: "Critical", dot: "#F59E0B", text: "#92400E" },
 };
 
+// Brand-compliant chips. Risk lifecycle mapped onto the RTPM status palette:
+// Identified -> Orange (watch), Assessed -> Indigo 700 (in progress),
+// Mitigated -> Light Blue (info), Resolved -> Green (done).
+export const RISK_STATUS_CHIP: Record<
+  RiskStatus,
+  { label: string; bg: string; text: string }
+> = {
+  identified: { label: "Identified", bg: "#ff8b00", text: "#ffffff" },
+  assessed: { label: "Assessed", bg: "#0d08d2", text: "#ffffff" },
+  mitigated: { label: "Mitigated", bg: "#00acff", text: "#ffffff" },
+  resolved: { label: "Resolved", bg: "#28a745", text: "#ffffff" },
+};
+
+export const PRIORITY_CHIP: Record<
+  RiskPriority,
+  { label: string; bg: string; text: string }
+> = {
+  low: { label: "Low", bg: "#e7e6fa", text: "#0d08d2" },
+  medium: { label: "Medium", bg: "#ffcc00", text: "#111827" },
+  high: { label: "High", bg: "#ff8b00", text: "#ffffff" },
+  critical: { label: "Critical", bg: "#e63946", text: "#ffffff" },
+};
+
 export const STATUS_LABEL: Record<RiskStatus, string> = {
   identified: "Identified",
   assessed: "Assessed",

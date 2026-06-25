@@ -4,22 +4,35 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: "#111827",
+        // RTPM brand indigo ramp
         indigo: {
-          DEFAULT: "#4F46E5",
-          600: "#4F46E5",
+          DEFAULT: "#0d08d2",
+          900: "#070474",
+          800: "#090693",
+          700: "#0d08d2",
+          600: "#0b07b9",
+          500: "#312dd9",
+          400: "#5652e0",
+          "050": "#e7e6fa",
         },
-        emerald: {
-          DEFAULT: "#10B981",
-        },
-        amber: {
-          DEFAULT: "#F59E0B",
-        },
+        // Accent + semantic/status colors (fixed meaning per brand guide)
+        accent: "#ffcc00",
+        success: "#28a745",
+        critical: "#e63946",
+        warning: "#ff8b00",
+        info: "#00acff",
+        // Neutrals
+        ink: "#111827",
+        graytext: "#6b7280",
         fog: "#F3F4F6",
         bordergray: "#E5E7EB",
+        // Legacy tokens retained so existing risk board / detail keep rendering
+        emerald: { DEFAULT: "#10B981" },
+        amber: { DEFAULT: "#F59E0B" },
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
+        head: ['"Barlow Condensed"', "system-ui", "sans-serif"],
+        sans: ["Montserrat", "system-ui", "sans-serif"],
         mono: ["JetBrains Mono", "ui-monospace", "monospace"],
       },
       boxShadow: {
@@ -30,6 +43,9 @@ export default {
         card: "8px",
         btn: "6px",
         input: "4px",
+      },
+      transitionTimingFunction: {
+        "in-out": "cubic-bezier(0.4, 0, 0.2, 1)",
       },
     },
   },

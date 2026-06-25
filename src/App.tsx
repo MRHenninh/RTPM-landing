@@ -5,9 +5,11 @@ import { useRiskStore } from "./store/riskStore";
 import { seedIfEmpty } from "./lib/seed";
 import { SEED_PROJECT } from "./lib/seedData";
 import Login from "./pages/Login";
+import Overview from "./pages/Overview";
 import Dashboard from "./pages/Dashboard";
 import RiskDetail from "./pages/RiskDetail";
 import RolesResponsibility from "./pages/RolesResponsibility";
+import ModulePlaceholder from "./pages/ModulePlaceholder";
 import AppShell from "./components/AppShell";
 
 export default function App() {
@@ -51,9 +53,12 @@ export default function App() {
   return (
     <Routes>
       <Route element={<AppShell />}>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Overview />} />
+        <Route path="/risks" element={<Dashboard />} />
         <Route path="/risks/:riskId" element={<RiskDetail />} />
         <Route path="/roles" element={<RolesResponsibility />} />
+        <Route path="/settings" element={<ModulePlaceholder />} />
+        <Route path="/m/:module" element={<ModulePlaceholder />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
