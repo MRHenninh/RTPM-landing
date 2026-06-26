@@ -3,7 +3,7 @@
 
 export const SEED_PROJECT = {
   id: "datacenter-vejle-phase-1",
-  name: "DataCenter Vejle — Phase 1",
+  name: "DataCenter Vejle - Phase 1",
   description:
     "Greenfield hyperscale data center build in Vejle, Denmark. Phase 1 covers civil works, MEP infrastructure and IT/data fit-out.",
 };

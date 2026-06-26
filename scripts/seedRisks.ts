@@ -68,7 +68,7 @@ const RISKS: SeedRisk[] = [
     nextStepOwner: "Quality Manager",
     priority: "high",
     description:
-      "Protection relay injection test failed on first witness. NCR raised. Cure period active — 18 days remaining before contractor installation window opens.",
+      "Protection relay injection test failed on first witness. NCR raised. Cure period active - 18 days remaining before contractor installation window opens.",
   },
   {
     riskId: "RISK-003",
@@ -98,7 +98,7 @@ const RISKS: SeedRisk[] = [
   },
   {
     riskId: "RISK-005",
-    title: "Generator Set Delivery — Port Congestion",
+    title: "Generator Set Delivery - Port Congestion",
     status: "assessed",
     workstream: "Finance & Contract",
     likelihood: 2,
@@ -157,7 +157,7 @@ async function main() {
         createdAt: FieldValue.serverTimestamp(),
         updatedAt: FieldValue.serverTimestamp(),
       });
-    console.log(`  ✓ ${r.riskId} — ${r.title} (${r.status}, score ${r.score})`);
+    console.log(`  ✓ ${r.riskId} - ${r.title} (${r.status}, score ${r.score})`);
   }
 
   console.log("Done.");
