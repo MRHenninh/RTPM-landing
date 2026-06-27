@@ -49,7 +49,7 @@ export default function ChatPanel({ risk, roles, onClose }: Props) {
       riskId: risk.id,
       mode: next,
       role: "system",
-      content: `Switched to ${next === "agent" ? "Risk Manager (AI)" : "Risk Resolve Chat"}`,
+      content: `Switched to ${next === "agent" ? "Risk Manager (AI)" : "Communication Log"}`,
       authorUid: me.uid,
       authorName: me.name,
     });
@@ -136,7 +136,7 @@ export default function ChatPanel({ risk, roles, onClose }: Props) {
             className="text-sm font-bold"
             style={{ color: isAgent ? "#B45309" : "#4F46E5" }}
           >
-            {isAgent ? "Risk Manager" : "Risk Resolve Chat"}
+            {isAgent ? "Risk Manager" : "Communication Log"}
           </span>
         </div>
         <div className="flex items-center gap-1">

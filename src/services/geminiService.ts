@@ -111,7 +111,7 @@ export async function askRiskManager(
 ): Promise<string> {
   // Keep the authentication check — user must be signed in to use AI chat.
   if (!auth.currentUser) {
-    throw new Error("You must be signed in to use Risk Manager AI.");
+    throw new Error("You must be signed in to use the Risk Agent.");
   }
 
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;

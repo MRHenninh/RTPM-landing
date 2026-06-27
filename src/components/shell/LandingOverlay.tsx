@@ -49,7 +49,7 @@ export default function LandingOverlay() {
             </div>
             <div>
               <h1 className="font-head text-[24px] font-bold leading-tight text-[#0d08d2]">
-                Risk Manager AI
+                Risk Agent
               </h1>
             </div>
           </div>
