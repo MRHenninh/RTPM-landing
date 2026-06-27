@@ -27,7 +27,7 @@ export default function ProjectManagerPanel() {
       >
         <button
           onClick={() => setCollapsed(false)}
-          title="Open Project Manager"
+          title="Open Risk Manager AI"
           className="flex h-9 w-9 items-center justify-center rounded-full text-[#0d08d2] hover:bg-[#e7e6fa]"
         >
           <ChevronLeft size={18} />
@@ -54,7 +54,7 @@ export default function ProjectManagerPanel() {
             <Bot size={16} />
           </div>
           <span className="font-head text-[14px] font-bold text-[#0d08d2]">
-            Project Manager
+            Risk Manager AI
           </span>
         </div>
         <button
@@ -70,7 +70,7 @@ export default function ProjectManagerPanel() {
       <div className="scroll-thin flex flex-1 flex-col gap-2 overflow-y-auto px-3 py-3">
         {pmMessages.length === 0 && !pmTyping && (
           <div className="mt-6 text-center text-[12px] text-graytext">
-            Ask the Project Manager about any risk across Viking DC.
+            Ask the Risk Manager AI about any risk across Viking DC.
           </div>
         )}
         {pmMessages.map((m, i) => {

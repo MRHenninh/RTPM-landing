@@ -73,8 +73,8 @@ export const useShellStore = create<ShellState>((set, get) => ({
             role: "assistant",
             content:
               err instanceof Error
-                ? `Project Manager is unavailable: ${err.message}`
-                : "Project Manager is unavailable right now.",
+                ? `Risk Manager AI is unavailable: ${err.message}`
+                : "Risk Manager AI is unavailable right now.",
           },
         ],
       });
