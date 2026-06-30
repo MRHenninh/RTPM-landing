@@ -16,6 +16,7 @@ interface PMMessage {
 interface ShellState {
   mode: ShellMode;
   todosOpen: boolean;
+  rightPanelCollapsed: boolean;
   // Project Manager (global AI) chat — shared between the landing card and
   // the always-on right panel.
   pmMessages: PMMessage[];
@@ -24,6 +25,7 @@ interface ShellState {
   dismissLanding: () => void;
   setMode: (mode: ShellMode) => void;
   toggleFocus: () => void;
+  toggleRightPanel: () => void;
   openTodos: () => void;
   closeTodos: () => void;
   sendPM: (text: string) => Promise<void>;
@@ -33,6 +35,7 @@ export const useShellStore = create<ShellState>((set, get) => ({
   // App opens at the AI landing every time.
   mode: "landing",
   todosOpen: false,
+  rightPanelCollapsed: false,
   pmMessages: [],
   pmTyping: false,
 
@@ -40,6 +43,8 @@ export const useShellStore = create<ShellState>((set, get) => ({
   setMode: (mode) => set({ mode }),
   toggleFocus: () =>
     set({ mode: get().mode === "focus" ? "active" : "focus" }),
+  toggleRightPanel: () =>
+    set({ rightPanelCollapsed: !get().rightPanelCollapsed }),
   openTodos: () => set({ todosOpen: true }),
   closeTodos: () => set({ todosOpen: false }),
 
@@ -73,8 +78,8 @@ export const useShellStore = create<ShellState>((set, get) => ({
             role: "assistant",
             content:
               err instanceof Error
-                ? `Risk Agent is unavailable: ${err.message}`
-                : "Risk Agent is unavailable right now.",
+                ? `Project Manager Agent is unavailable: ${err.message}`
+                : "Project Manager Agent is unavailable right now.",
           },
         ],
       });

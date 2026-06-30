@@ -49,7 +49,9 @@ export default function ChatPanel({ risk, roles, onClose }: Props) {
       riskId: risk.id,
       mode: next,
       role: "system",
-      content: `Switched to ${next === "agent" ? "Risk Manager (AI)" : "Communication Log"}`,
+      content: `Switched to ${
+        next === "agent" ? "Risk Management Agent" : `${risk.riskId} Chat Log`
+      }`,
       authorUid: me.uid,
       authorName: me.name,
     });
@@ -101,7 +103,7 @@ export default function ChatPanel({ risk, roles, onClose }: Props) {
         role: "assistant",
         content: reply || "Risk Manager could not generate a response.",
         authorUid: "risk-manager-agent",
-        authorName: "Risk Manager",
+        authorName: "Risk Management Agent",
       });
     } catch (err) {
       console.error(err);
@@ -136,7 +138,7 @@ export default function ChatPanel({ risk, roles, onClose }: Props) {
             className="text-sm font-bold"
             style={{ color: isAgent ? "#B45309" : "#4F46E5" }}
           >
-            {isAgent ? "Risk Manager" : "Communication Log"}
+            {isAgent ? "Risk Management Agent" : `${risk.riskId} Chat Log`}
           </span>
         </div>
         <div className="flex items-center gap-1">

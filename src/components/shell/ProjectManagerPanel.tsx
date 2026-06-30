@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { Bot, Send, ChevronRight, ChevronLeft } from "lucide-react";
+import { Bot, Send, PanelRight, PanelRightClose } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { useShellStore } from "../../store/shellStore";
 
 export default function ProjectManagerPanel() {
-  const { pmMessages, pmTyping, sendPM } = useShellStore();
+  const { pmMessages, pmTyping, sendPM, rightPanelCollapsed, toggleRightPanel } =
+    useShellStore();
   const [text, setText] = useState("");
-  const [collapsed, setCollapsed] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -20,18 +21,20 @@ export default function ProjectManagerPanel() {
     setText("");
   }
 
-  if (collapsed) {
+  // Collapsed: shrink to a thin strip with a re-open control (mirrors the
+  // left sidebar's collapse behaviour, using the panel-toggle icon).
+  if (rightPanelCollapsed) {
     return (
       <div
         className="flex h-full w-12 shrink-0 flex-col items-center border-l py-3"
         style={{ borderColor: "#e7e6fa", background: "#ffffff" }}
       >
         <button
-          onClick={() => setCollapsed(false)}
-          title="Open Risk Agent"
+          onClick={toggleRightPanel}
+          title="Open Project Manager Agent"
           className="flex h-9 w-9 items-center justify-center rounded-full text-[#0d08d2] hover:bg-[#e7e6fa]"
         >
-          <ChevronLeft size={18} />
+          <PanelRight size={18} />
         </button>
         <div className="mt-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#e7e6fa] text-[#0d08d2]">
           <Bot size={16} />
@@ -55,15 +58,15 @@ export default function ProjectManagerPanel() {
             <Bot size={16} />
           </div>
           <span className="font-head text-[14px] font-bold text-[#0d08d2]">
-            Risk Agent
+            Project Manager Agent
           </span>
         </div>
         <button
-          onClick={() => setCollapsed(true)}
-          title="Minimize"
+          onClick={toggleRightPanel}
+          title="Collapse panel"
           className="flex h-7 w-7 items-center justify-center rounded-full text-graytext hover:bg-[#e7e6fa]"
         >
-          <ChevronRight size={18} />
+          <PanelRightClose size={18} />
         </button>
       </div>
 
@@ -71,7 +74,7 @@ export default function ProjectManagerPanel() {
       <div className="scroll-thin flex flex-1 flex-col gap-2 overflow-y-auto px-3 py-3">
         {pmMessages.length === 0 && !pmTyping && (
           <div className="mt-6 text-center text-[12px] text-graytext">
-            Ask the Risk Agent about any risk across Viking DC.
+            Ask the Project Manager Agent about any risk across Viking Project.
           </div>
         )}
         {pmMessages.map((m, i) => {
@@ -91,7 +94,7 @@ export default function ProjectManagerPanel() {
                     }
                   : {
                       background: "#e7e6fa",
-                      color: "#0d08d2",
+                      color: "#1f2937",
                       borderRadius: "14px 14px 14px 4px",
                     }
               }
@@ -99,8 +102,10 @@ export default function ProjectManagerPanel() {
               {isUser ? (
                 m.content
               ) : (
-                <div className="md-content">
-                  <ReactMarkdown>{m.content}</ReactMarkdown>
+                <div className="prose prose-sm prose-indigo max-w-none">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {m.content}
+                  </ReactMarkdown>
                 </div>
               )}
             </div>

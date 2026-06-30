@@ -3,7 +3,9 @@
 
 export const SEED_PROJECT = {
   id: "datacenter-vejle-phase-1",
-  name: "DataCenter Vejle - Phase 1",
+  // Human-readable display name only. The Firestore project id above is the
+  // key linking risks / R&R / messages and must NOT change.
+  name: "Viking Project",
   description:
     "Greenfield hyperscale data center build in Vejle, Denmark. Phase 1 covers civil works, MEP infrastructure and IT/data fit-out.",
 };

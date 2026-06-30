@@ -4,6 +4,7 @@ import { useShellStore } from "../../store/shellStore";
 import { useRiskStore } from "../../store/riskStore";
 import { useAuthStore, currentIdentity } from "../../store/authStore";
 import { overdueRisks } from "../../lib/shell";
+import { SEED_PROJECT } from "../../lib/seedData";
 
 const SUGGESTIONS = [
   "Show critical risks",
@@ -49,13 +50,13 @@ export default function LandingOverlay() {
             </div>
             <div>
               <h1 className="font-head text-[24px] font-bold leading-tight text-[#0d08d2]">
-                Risk Agent
+                Project Manager Agent
               </h1>
             </div>
           </div>
 
           <p className="mt-3 text-[14px] text-graytext">
-            God morgen, {me.name}. Viking DC has{" "}
+            God morgen, {me.name}. {SEED_PROJECT.name} has{" "}
             <span className="font-semibold text-ink">{overdue}</span> overdue{" "}
             {overdue === 1 ? "risk" : "risks"}.
           </p>
