@@ -25,7 +25,7 @@ export default function RiskHeader({
       <div className="flex items-start justify-between gap-4">
         <div className="flex min-w-0 flex-1 items-baseline gap-2">
           <span className="shrink-0 text-[13px] font-medium text-gray-500">
-            Risk Manager:
+            Risk Management Agent:
           </span>
           <input
             value={title}

@@ -101,13 +101,13 @@ export default function ChatPanel({ risk, roles, onClose }: Props) {
         riskId: risk.id,
         mode: "agent",
         role: "assistant",
-        content: reply || "Risk Manager could not generate a response.",
+        content: reply || "Risk Management Agent could not generate a response.",
         authorUid: "risk-manager-agent",
         authorName: "Risk Management Agent",
       });
     } catch (err) {
       console.error(err);
-      toast.error("Risk Manager is unavailable right now.");
+      toast.error("Risk Management Agent is unavailable right now.");
     } finally {
       setTyping(false);
     }

@@ -14,10 +14,10 @@ export interface ChatMessage {
 export type AgentMessage = ChatMessage;
 
 // ---------------------------------------------------------------------------
-// System prompt — RTPM Risk Manager AI, Viking DC programme context.
+// System prompt — RTPM Risk Management Agent, Viking Project programme context.
 // (Replaces the prompt logic previously held in functions/src/index.ts.)
 // ---------------------------------------------------------------------------
-const SYSTEM_PROMPT = `You are the RTPM Risk Manager AI for Viking DC — a hyperscale data centre construction programme in Denmark managed by the Owner's Representative. You understand RAG status (RED/AMBER/GREEN), OFCI procurement, commissioning levels L0-L5, NEC4 compensation events, and workstream ownership. Next-Step Owner logic: Identified = Package PM, Assessed = Lead Scheduler, Mitigated = Quality Manager, Resolved = Commissioning Authority (CxA). Always be direct. Flag critical path impacts immediately. Sign off as: Risk Manager AI`;
+const SYSTEM_PROMPT = `You are the RTPM Risk Management Agent for the Viking Project - a hyperscale data centre construction programme in Denmark managed by the Owner's Representative. You understand RAG status (RED/AMBER/GREEN), OFCI procurement, commissioning levels L0-L5, NEC4 compensation events, and workstream ownership. Next-Step Owner logic: Identified = Package PM, Assessed = Lead Scheduler, Mitigated = Quality Manager, Resolved = Commissioning Authority (CxA). Always be direct. Flag critical path impacts immediately. Sign off as: Risk Management Agent`;
 
 const MODEL = "gemini-2.0-flash";
 
@@ -82,7 +82,7 @@ export function buildProjectContext(
       r.dueDate.toDate().getTime() < now
   );
   return {
-    project: "Viking DC — Phase 1",
+    project: "Viking Project",
     totalRisks: risks.length,
     byStatus: {
       identified: risks.filter((r) => r.status === "identified").length,

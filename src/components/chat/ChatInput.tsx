@@ -70,7 +70,7 @@ export default function ChatInput({ mode, disabled, members, onSend }: Props) {
           }}
           placeholder={
             mode === "agent"
-              ? "Ask Risk Manager…"
+              ? "Ask the Risk Management Agent…"
               : "Message the team…  (@ to mention)"
           }
           rows={1}
